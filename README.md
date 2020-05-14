@@ -1,2 +1,2 @@
 # strix
-A Python Package for Creating Google Earth Files
+A Python Package for field-based GIS work

@@ -5,14 +5,14 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="strix",
-    version="0.5.0",
+    version="0.5.1",
     author="HFM3",
     # author_email="author@example.com",
     description="A Python Package for field-based GIS work",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url='https://github.com/HFM3/strix',
-    packages=setuptools.find_packages(),
+    packages=setuptools.find_packages(exclude=["tests.*", "tests"]),
     classifiers=[
         "Development Status :: 1 - Planning",
         "Intended Audience :: Science/Research",

@@ -1,4 +1,7 @@
 from strix.file_formats import kml_base
+from strix import file_actions as fa
+
+# Import remaining KML base functions so kml module works as one
 from strix.file_formats.kml_base import point_style, line_style, poly_style, folder, kml
 
 
@@ -64,3 +67,7 @@ def from_gca_polygon(gca_obj, name_header, folder_name, folder_description='',
     poly_folder = kml_base.folder(folder_name, polygons, folder_description, folder_collapsed)
 
     return poly_folder
+
+
+def write(file_path, kml_str):
+    fa.text_writer(file_path, kml_str)

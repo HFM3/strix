@@ -1,7 +1,7 @@
 import unittest
 from strix.gca import GCA
 from strix.file_formats import geo_json
-from tests.file_formats.tests import gca_vars
+from tests.file_formats.variables import gca_vars
 
 
 class TestFromGCA(unittest.TestCase):

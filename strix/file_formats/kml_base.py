@@ -88,24 +88,8 @@ def altitude_modes(altitude_mode='ctg'):
     abs = absolute
         Altitude relative to sea level.
 
-    Examples
-    ________
-    When a valid abbreviation is provided:
-
-    >>> altitude_modes('abs')
-    absolute
-
-    When an invalid abbreviation is provided:
-
-    >>> altitude_modes('qwerty')
-    clampToGround
-
-    When no abbreviation is provided.
-
-    >>> altitude_modes()
-    clampToGround
-
     """
+
     # Abbreviation dictionary
     abbreviations = {'abs': 'absolute',
                      'ctg': 'clampToGround',
@@ -127,7 +111,7 @@ def kml_color(hex6_color, opacity=100):
     Parameters
     ----------
     hex6_color : str
-        RGB hex color without "#".
+        RGB hex color with "#".
     opacity : int, optional
         A value between 0 and 100 where 0 is transparent (Default = 100).
 
@@ -142,18 +126,11 @@ def kml_color(hex6_color, opacity=100):
     any one color is 0 to 255 (00 to ff). For alpha, 00 is fully transparent and ff is fully opaque. The order of
     expression is aabbggrr, where aa=alpha (00 to ff); bb=blue (00 to ff); gg=green (00 to ff); rr=red (00 to ff).
 
-    Examples
-    ________
-    Red (#ff0000) with 45% opacity.
-
-    >>> kml_color('ff0000', 45)
-    730000ff
-
     """
 
-    r = hex6_color[:2]
-    g = hex6_color[2:4]
-    b = hex6_color[4:]
+    r = hex6_color[1:3]
+    g = hex6_color[3:5]
+    b = hex6_color[5:]
     opacity = hex(int(round(opacity / 100 * 255, 0)))[2:]
     kml_color_code = str(opacity + b + g + r).lower()
 
@@ -482,8 +459,8 @@ def polygon(coords, name, headers, attributes, altitude_mode="ctg",
     return placemark
 
 
-def point_style(name, icon="http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png", color=('ffff00', 100), scale=1.0,
-                label_color=('ffffff', 100), label_size=1.0,):
+def point_style(name, icon="http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png", color=('#ffff00', 100), scale=1.0,
+                label_color=('#ffffff', 100), label_size=1.0,):
     """Creates a KML element of a point style.
 
     Parameters
@@ -526,7 +503,7 @@ def point_style(name, icon="http://maps.google.com/mapfiles/kml/shapes/placemark
     return style
 
 
-def line_style(name, color=('ff0000', 100), width=3.0, extrude_color=('34c9eb', 35)):
+def line_style(name, color=('#ff0000', 100), width=3.0, extrude_color=('#34c9eb', 35)):
     """Creates a KML element of a line style.
 
     Parameters
@@ -559,7 +536,7 @@ def line_style(name, color=('ff0000', 100), width=3.0, extrude_color=('34c9eb', 
     return style
 
 
-def poly_style(name, color=('03cafc', 40), outline_width=1.0, outline_color=('fcdf03', 100)):
+def poly_style(name, color=('#03cafc', 40), outline_width=1.0, outline_color=('#fcdf03', 100)):
     """Creates a KML element of a polygon style.
 
     Parameters
@@ -645,14 +622,14 @@ def folder(name, loose_items, description='', folder_collapsed=True, hidden=True
     return new_folder
 
 
-def kml(name, styles, items, description='', folder_collapsed=True):
+def kml(name, styles, features, description='', folder_collapsed=True):
     """Creates a KML string.
 
     Parameters
     ----------
     name : str
     styles : list
-    items : list
+    features : list
     description : str
     folder_collapsed : bool
 
@@ -682,7 +659,7 @@ def kml(name, styles, items, description='', folder_collapsed=True):
 
     for style in styles:
         ET.Element.append(body, style)
-    for item in items:
+    for item in features:
         ET.Element.append(body, item)
 
     kml_string = '<?xml version="1.0" encoding="UTF-8"?>'

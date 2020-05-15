@@ -1,7 +1,7 @@
 import unittest
 from strix.gca import GCA
 from strix.file_formats import csv
-from tests.file_formats.tests import gca_vars, csv_vars
+from tests.file_formats.variables import csv_vars, gca_vars
 
 
 class TestFromGCA(unittest.TestCase):

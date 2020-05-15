@@ -1,6 +1,6 @@
 import unittest
 from strix import gca
-from tests.file_formats.tests import gca_vars
+from tests.file_formats.variables import gca_vars
 
 
 class TestGCA(unittest.TestCase):

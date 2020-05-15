@@ -12,7 +12,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url='https://github.com/HFM3/strix',
-    packages=setuptools.find_packages(exclude=["tests.*", "tests"]),
+    packages=setuptools.find_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
     classifiers=[
         "Development Status :: 1 - Planning",
         "Intended Audience :: Science/Research",

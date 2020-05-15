@@ -1,7 +1,7 @@
 import unittest
 from strix.gca import GCA
 from strix.file_formats import egf
-from tests.file_formats.tests import egf_vars, gca_vars
+from tests.file_formats.variables import egf_vars, gca_vars
 
 
 class TestFromGCA(unittest.TestCase):

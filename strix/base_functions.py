@@ -3,7 +3,7 @@ from strix.file_formats import egf
 from strix.file_formats import csv
 from strix.file_formats import geo_json
 
-__all__ = ["read_egf", "write_egf", "write_geojson", "read_csv", "write_csv"]
+__all__ = ["read_egf", "write_egf", "write_geojson", "read_csv", "write_csv", "visualize"]
 
 
 def read_egf(file_path):
@@ -20,8 +20,12 @@ def write_egf(file_path, gca_obj):
     return gca_as_egf
 
 
-def write_geojson(file_path, gca_obj, visualize=False):
-    gca_as_json_str = geo_json.from_gca(gca_obj, visualize)
+def visualize(gca_obj):
+    geo_json.from_gca(gca_obj, visualize=True)
+
+
+def write_geojson(file_path, gca_obj):
+    gca_as_json_str = geo_json.from_gca(gca_obj)
     fa.text_writer(file_path, gca_as_json_str)
 
     return gca_as_json_str

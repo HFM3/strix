@@ -1,63 +1,5 @@
-"""Functions for creating KML placemarks.
-
-Examples
---------
-    Example of how to create points, lines, polygons, styles, and folders for a KML file using a baseball park as an example.
-
-    >>> # Home plate marker. (Create a point and point style)
-    >>> hp = point([-71.097769, 42.346249, 0], 'Home Plate', ['City', 'Park', 'Base'], ['Boston', 'Fenway', 'Home'], style_to_use='Bases Style')
-    >>> hp_style = point_style('Bases Style', 'http://maps.google.com/mapfiles/kml/shapes/placemark_square.png', ('f2392c', 100))
-
-    >>> # Warning track boundary. (Create a line and line style)
-    >>> # Coordinates for line
-    >>> warning_track_boundary_coords = [[-71.097727, 42.346729, 0],
-    ...                                 [-71.097721, 42.347030, 0],
-    ...                                  [-71.097023, 42.347030, 0],
-    ...                                  [-71.096694, 42.346892, 0],
-    ...                                  [-71.096457, 42.346414, 0],
-    ...                                  [-71.096499, 42.346359, 0],
-    ...                                  [-71.096695, 42.346306, 0],
-    ...                                  [-71.096971, 42.346287, 0]]
-
-    >>> # Line
-    >>> wt = line(warning_track_boundary_coords, 'Warning Track', ['City', 'Park', 'Line'], ['Boston', 'Fenway', 'Warning track'], style_to_use='Warning Track Style')
-    >>> # Line style
-    >>> wt_style = line_style('Warning Track Style', ('0ff563', 100))
-
-    >>> # Polygon of the area within the bases. (Create a polygon, polygon hole, and polygon style)
-    >>> # Bases polygon. (To close polygon, last coordinate set is a duplicate of first coordinate set)
-    >>> bases = [[-71.097769, 42.346249, 0],
-    ...         [-71.097440, 42.346251, 0],
-    ...         [-71.097441, 42.346496, 0],
-    ...         [-71.097772, 42.346491, 0],
-    ...         [-71.097769, 42.346249, 0]]
-
-    >>> # Polygon hole for pitcher's mound. (To close polygon, last coordinate set is a duplicate of first coordinate set)
-    >>> mound = [[-71.097656, 42.346331, 0],
-    ...         [-71.097580, 42.346331, 0],
-    ...         [-71.097580, 42.346387, 0],
-    ...         [-71.097656, 42.346387, 0],
-    ...         [-71.097656, 42.346331, 0]]
-
-    >>> # Polygon
-    >>> base_area = polygon([bases, mound], 'Bases Area', ['City', 'Park', 'Area'], ['Boston', 'Fenway', 'Inside of bases'], style_to_use='Bases Area Style')
-    >>> # Polygon style
-    >>> bases_area_style = poly_style('Bases Area Style')
-
-    >>> # Gather placemark elements (point, line, polygon) into a single folder.
-    >>> f = folder('Placemarks', [hp, wt, base_area], 'Sample placemarks.')
-
-    >>> # Create a KML containing above folder and styles
-    >>> k = kml('Fenway Park', [hp_style, wt_style, bases_area_style], [f])
-
-    >>> # print a string of a KML file contents
-    >>> print(k)
-
-    Notes
-    _____
-
-    See Also
-    ________
+"""
+Functions for creating KML placemarks.
 
 """
 
@@ -131,14 +73,17 @@ def kml_color(hex6_color, opacity=100):
     r = hex6_color[1:3]
     g = hex6_color[3:5]
     b = hex6_color[5:]
-    opacity = hex(int(round(opacity / 100 * 255, 0)))[2:]
-    kml_color_code = str(opacity + b + g + r).lower()
+
+    if 0 > opacity or opacity > 100:
+        raise ValueError("Opacity value must be between 0 and 100")
+
+    opacity_hex = format(int(round(opacity / 100 * 255, 0)), '02x')
+    kml_color_code = str(opacity_hex + b + g + r).lower()
 
     return kml_color_code
 
 
-def point(coords, name, headers, attributes,
-                 altitude_mode="ctg", style_to_use=None, hidden=False):
+def point(coords, name, headers, attributes, altitude_mode="ctg", style_to_use=None, hidden=False):
     """Creates a KML element of a point.
 
     Parameters
@@ -167,9 +112,7 @@ def point(coords, name, headers, attributes,
     ________
     A point marking home plate at Fenway Park in Boston, MA.
 
-    >>> hp = point([-71.097769, 42.346249, 0], 'Home Plate', ['City', 'Park', 'Base'], ['Boston', 'Fenway', 'Home'], style_to_use='Bases Style')
-    >>> ET.dump(hp)
-    <Placemark><name>Home Plate</name>...</Placemark>
+    hp = point([-71.097769, 42.346249, 0], 'Home Plate', ['City', 'Park', 'Base'], ['Boston', 'Fenway', 'Home'], style_to_use='Bases Style')
     """
 
     # Create placemark
@@ -252,18 +195,16 @@ def line(coords, name, headers, attributes, altitude_mode="ctg",
     ________
     A line marking the warning track boundary at Fenway Park in Boston, MA.
 
-    >>> warning_track_boundary_coords = [[-71.097727, 42.346729, 0],
-    ...                                 [-71.097721, 42.347030, 0],
-    ...                                 [-71.097023, 42.347030, 0],
-    ...                                 [-71.096694, 42.346892, 0],
-    ...                                 [-71.096457, 42.346414, 0],
-    ...                                 [-71.096499, 42.346359, 0],
-    ...                                 [-71.096695, 42.346306, 0],
-    ...                                 [-71.096971, 42.346287, 0]]
+   warning_track_boundary_coords = [[-71.097727, 42.346729, 0],
+                                     [-71.097721, 42.347030, 0],
+                                     [-71.097023, 42.347030, 0],
+                                     [-71.096694, 42.346892, 0],
+                                     [-71.096457, 42.346414, 0],
+                                     [-71.096499, 42.346359, 0],
+                                     [-71.096695, 42.346306, 0],
+                                     [-71.096971, 42.346287, 0]]
 
-    >>> wt = line(warning_track_boundary_coords, 'Warning Track', ['City', 'Park', 'Line'], ['Boston', 'Fenway', 'Warning track'], style_to_use='Warning Track Style')
-    >>> ET.dump(wt)
-    <Placemark><name>Warning Track</name>...</Placemark>
+    wt = line(warning_track_boundary_coords, 'Warning Track', ['City', 'Park', 'Line'], ['Boston', 'Fenway', 'Warning track'], style_to_use='Warning Track Style')
 
     """
 
@@ -365,22 +306,23 @@ def polygon(coords, name, headers, attributes, altitude_mode="ctg",
     ________
     A polygon marking the area between the bases at Fenway Park in Boston, MA.
 
-    >>> # Bases polygon
-    >>> bases = [[-71.097769, 42.346249, 0],
-    ...         [-71.097440, 42.346251, 0],
-    ...         [-71.097441, 42.346496, 0],
-    ...         [-71.097772, 42.346491, 0],
-    ...         [-71.097769, 42.346249, 0]]
+    Bases polygon
+    bases = [[-71.097769, 42.346249, 0],
+             [-71.097440, 42.346251, 0],
+             [-71.097441, 42.346496, 0],
+             [-71.097772, 42.346491, 0],
+             [-71.097769, 42.346249, 0]]
 
-    >>> # Pitcher's mound hole
-    >>> mound = [[-71.097656, 42.346331, 0],
-    ...         [-71.097580, 42.346331, 0],
-    ...         [-71.097580, 42.346387, 0],
-    ...         [-71.097656, 42.346387, 0],
-    ...         [-71.097656, 42.346331, 0]]
+    Pitcher's mound hole
+    mound = [[-71.097656, 42.346331, 0],
+             [-71.097580, 42.346331, 0],
+             [-71.097580, 42.346387, 0],
+             [-71.097656, 42.346387, 0],
+             [-71.097656, 42.346331, 0]]
 
-    >>> base_area = polygon([bases, mound], 'Bases Area', ['City', 'Park', 'Area'], ['Boston', 'Fenway', 'Inside of bases'], style_to_use='Bases Area Style')
-    <Placemark><name>Bases Area</name>...</Placemark>
+    coords = [bases, mound]
+
+    base_area = polygon(coords, 'Bases Area', ['City', 'Park', 'Area'], ['Boston', 'Fenway', 'Inside of bases'], style_to_use='Bases Area Style')
 
     """
 
@@ -459,8 +401,8 @@ def polygon(coords, name, headers, attributes, altitude_mode="ctg",
     return placemark
 
 
-def point_style(name, icon="http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png", color=('#ffff00', 100), scale=1.0,
-                label_color=('#ffffff', 100), label_size=1.0,):
+def point_style(name, icon="http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png", color=('#ffff00', 100), scale=1.2,
+                label_color=('#ffffff', 100), label_size=1.0):
     """Creates a KML element of a point style.
 
     Parameters
@@ -485,12 +427,13 @@ def point_style(name, icon="http://maps.google.com/mapfiles/kml/shapes/placemark
     ________
     Red square icon
 
-    >>> hp_style = point_style('Bases Style', 'http://maps.google.com/mapfiles/kml/shapes/placemark_square.png', ('f2392c', 100))
+    style for home plate
+    hp_style = point_style('Bases Style', 'http://maps.google.com/mapfiles/kml/shapes/placemark_square.png', ('f2392c', 100))
 
     """
     style = ET.Element("Style", id=name)
     icon_style = ET.SubElement(style, "IconStyle")
-    ET.SubElement(icon_style, "color").text = kml_color(color[0], color[1])
+    ET.SubElement(icon_style, "color").text = kml_color(*color)
     ET.SubElement(icon_style, "scale").text = str(scale)
 
     icon_icon = ET.SubElement(icon_style, "Icon")
@@ -498,7 +441,7 @@ def point_style(name, icon="http://maps.google.com/mapfiles/kml/shapes/placemark
 
     label_style = ET.SubElement(style, "LabelStyle")
     ET.SubElement(label_style, "scale").text = str(label_size)
-    ET.SubElement(label_style, "color").text = kml_color(label_color[0], label_color[1])
+    ET.SubElement(label_style, "color").text = kml_color(*label_color)
 
     return style
 
@@ -522,21 +465,24 @@ def line_style(name, color=('#ff0000', 100), width=3.0, extrude_color=('#34c9eb'
     --------
     Green line
 
-    >>> wt_style = line_style('Warning Track Style', ('0ff563', 100))
+    warning track line style
+    wt_style = line_style('Warning Track Style', ('0ff563', 100))
 
     """
+
     style = ET.Element("Style", id=name)
     styled_line = ET.SubElement(style, "LineStyle")
-    ET.SubElement(styled_line, "color").text = kml_color(color[0], color[1])
+
+    ET.SubElement(styled_line, "color").text = kml_color(*color)
     ET.SubElement(styled_line, "width").text = str(width)
 
     styled_extrude = ET.SubElement(style, "PolyStyle")
-    ET.SubElement(styled_extrude, "color").text = kml_color(extrude_color[0], extrude_color[1])
+    ET.SubElement(styled_extrude, "color").text = kml_color(*extrude_color)
 
     return style
 
 
-def poly_style(name, color=('#03cafc', 40), outline_width=1.0, outline_color=('#fcdf03', 100)):
+def polygon_style(name, color=('#03cafc', 40), outline_width=1.0, outline_color=('#fcdf03', 100)):
     """Creates a KML element of a polygon style.
 
     Parameters
@@ -554,17 +500,17 @@ def poly_style(name, color=('#03cafc', 40), outline_width=1.0, outline_color=('#
     Examples
     ________
     Create a polygon style with default styling
-    >>> poly_style('Bases Area Style')
+    poly_style('Bases Area Style')
 
     """
 
     style = ET.Element("Style", id=name)
 
     poly_color = ET.SubElement(style, "PolyStyle")
-    ET.SubElement(poly_color, "color").text = kml_color(color[0], color[1])
+    ET.SubElement(poly_color, "color").text = kml_color(*color)
 
     outline = ET.SubElement(style, "LineStyle")
-    ET.SubElement(outline, "color").text = kml_color(outline_color[0], outline_color[1])
+    ET.SubElement(outline, "color").text = kml_color(*outline_color)
     ET.SubElement(outline, "width").text = str(outline_width)
 
     return style
@@ -591,7 +537,7 @@ def folder(name, loose_items, description='', folder_collapsed=True, hidden=True
 
     Examples
     --------
-    >>> f = folder('Placemarks', [hp, wt, base_area], 'Sample placemarks.')
+    f = folder('Placemarks', [hp, wt, base_area], 'Sample placemarks.')
 
     """
 
@@ -640,7 +586,7 @@ def kml(name, styles, features, description='', folder_collapsed=True):
 
     Examples
     --------
-    >>> k = kml('Fenway Park', [hp_style, wt_style, bases_area_style], [f])
+    k = kml('Fenway Park', [hp_style, wt_style, bases_area_style], [f])
 
     """
 

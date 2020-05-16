@@ -1,12 +1,33 @@
 from strix.file_formats import kml_base
 from strix import file_actions as fa
 
-# Import remaining KML base functions so kml module works as one
-from strix.file_formats.kml_base import point_style, line_style, poly_style, folder, kml
+# Import remaining KML base functions
+from strix.file_formats.kml_base import point_style, line_style, polygon_style, folder, kml
 
 
 def from_gca_point(gca_obj, name_header, folder_name, folder_description='',
                    altitude_mode="ctg", style_to_use=None, pt_hidden=False, folder_collapsed=True):
+    """
+    Save features from GCA object into a kml folder
+
+    Parameters
+    ----------
+    gca_obj : GCA
+    name_header : str
+        The header that will be used to label features
+    folder_name : str
+    folder_description : str
+    altitude_mode : {'ctg', 'rtg', 'abs'}
+    style_to_use : str
+        name of style to use
+    pt_hidden : bool
+    folder_collapsed : bool
+
+    Returns
+    -------
+    KML Folder
+
+    """
 
     name_col = gca_obj.headers.index(name_header)
 
@@ -28,6 +49,29 @@ def from_gca_point(gca_obj, name_header, folder_name, folder_description='',
 def from_gca_linestring(gca_obj, name_header, folder_name, folder_description='',
                         altitude_mode="ctg", style_to_use=None, ls_hidden=False,
                         ls_follow_terrain=True, ls_extrude_to_ground=False, folder_collapsed=True):
+    """
+    Save features from GCA object into a kml folder
+
+    Parameters
+    ----------
+    gca_obj : GCA
+    name_header : str
+        The header that will be used to label features
+    folder_name : str
+    folder_description : str
+    altitude_mode : {'ctg', 'rtg', 'abs'}
+    style_to_use : str
+        name of style to use
+    ls_hidden : bool
+    ls_follow_terrain : bool
+    ls_extrude_to_ground : bool
+    folder_collapsed : bool
+
+    Returns
+    -------
+    KML Folder
+
+    """
 
     name_col = gca_obj.headers.index(name_header)
 
@@ -50,6 +94,28 @@ def from_gca_linestring(gca_obj, name_header, folder_name, folder_description=''
 def from_gca_polygon(gca_obj, name_header, folder_name, folder_description='',
                      altitude_mode="ctg", style_to_use=None, poly_hidden=False,
                      poly_follow_terrain=True, poly_extrude_to_ground=False, folder_collapsed=True):
+    """
+    Save features from GCA object into a kml folder
+
+    Parameters
+    ----------
+    gca_obj : GCA
+    name_header : str
+        The header that will be used to label features
+    folder_name : str
+    folder_description : str
+    altitude_mode : {'ctg', 'rtg', 'abs'}
+    style_to_use : str
+        name of style to use
+    poly_hidden : bool
+    poly_follow_terrain : bool
+    poly_extrude_to_ground : bool
+    folder_collapsed : bool
+
+    Returns
+    -------
+
+    """
 
     name_col = gca_obj.headers.index(name_header)
 
@@ -70,4 +136,19 @@ def from_gca_polygon(gca_obj, name_header, folder_name, folder_description='',
 
 
 def write(file_path, kml_str):
+    """
+    writes KML to file
+
+    Parameters
+    ----------
+    file_path : str
+        include file name and extension in path (e.g. docs/my_map.kml)
+    kml_str : str
+
+    Returns
+    -------
+    None
+
+    """
+
     fa.text_writer(file_path, kml_str)

@@ -157,12 +157,21 @@ class GCA:
 
         """
 
-        def coordinate_set_len(coord_set):
-            assert len(coord_set) == 3, f"Coordinate sets are required to have 3 coordinate values. {len(coord_set)} given {coord_set}"
+        def coordinate_set_len(coord_set, extend=True):
+            assert len(coord_set) <= 3, f"Coordinate sets cannot have more than 3 coordinate values. {len(coord_set)} given {coord_set}"
+
+            if extend is True:
+                if len(coord_set) < 3:
+                    x = [0] * (3 - len(coord_set))
+                    coord_set.extend(x)
+            else:
+                assert len(coord_set) == 3, f"Coordinate sets are required to have 3 coordinate values. {len(coord_set)} given {coord_set}"
+
+            return coord_set
 
         def pt_coordinates():
             for pt in self.coord_sets:
-                coordinate_set_len(pt)
+                pt = coordinate_set_len(pt)
                 for coord in pt:
                     vv.decimal_degree_validate(coord)
 
@@ -171,7 +180,7 @@ class GCA:
         def ls_coordinates():
             for ls in self.coord_sets:
                 for coord_set in ls:
-                    coordinate_set_len(coord_set)
+                    coord_set = coordinate_set_len(coord_set)
                     for coord in coord_set:
                         vv.decimal_degree_validate(coord)
 
@@ -181,7 +190,7 @@ class GCA:
             for poly in self.coord_sets:
                 for ring in poly:
                     for coord_set in ring:
-                        coordinate_set_len(coord_set)
+                        coord_set = coordinate_set_len(coord_set)
                         for coord in coord_set:
                             vv.decimal_degree_validate(coord)
 

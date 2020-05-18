@@ -100,7 +100,8 @@ def from_gca_polygon(gca_obj):
         for rg_num, ring in enumerate(ft[1]):
             if rg_num > 0:
                 egf_str += "\n"
-            for coord_set in ring:
+            # In GCA Poly, each ring has matching first/last coordinate sets. EGF does not.
+            for coord_set in ring[:-1]:
                 lng, lat, elev = coord_set[:3]
                 egf_str += "\n"
                 egf_str += ', '.join(str(coord) for coord in [lat, lng, elev])
@@ -317,6 +318,9 @@ def to_gca_polygon_components(egf_str):
                     lat, lng, elev = line_values
                     xyz_coords = [decimal_degree_validate(i) for i in [lng, lat, elev]]
                     ring_coords.append(xyz_coords)
+
+            # Make first coordinate set match last coordinate set for each ring in  GCA POLY
+            ring_coords.append(ring_coords[0])
 
             poly_coords.append(ring_coords)
         gca_coordinates.append(poly_coords)

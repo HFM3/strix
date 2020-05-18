@@ -5,7 +5,7 @@ from strix.file_formats import csv
 from strix.file_formats import geo_json
 from strix.file_formats import kml_gca as kml
 
-__all__ = ["read_egf", "write_egf", "read_geo_json", "write_geojson", "read_csv", "write_csv", "visualize", "write_kml"]
+__all__ = ["read_egf", "write_egf", "read_geojson", "write_geojson", "read_csv", "write_csv", "visualize", "write_kml"]
 
 
 def read_egf(file_path):
@@ -24,7 +24,7 @@ def visualize(gca_obj):
     geo_json.from_gca(gca_obj, visualize=True)
 
 
-def read_geo_json(file_path):
+def read_geojson(file_path):
     json_as_str = fa.str_file_read(file_path)
     json_as_gca = geo_json.to_gca(json_as_str)
 

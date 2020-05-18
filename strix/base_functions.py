@@ -19,8 +19,6 @@ def write_egf(file_path, gca_obj):
     gca_as_egf = egf.from_gca(gca_obj)
     fa.text_writer(file_path, gca_as_egf)
 
-    return gca_as_egf
-
 
 def visualize(gca_obj):
     geo_json.from_gca(gca_obj, visualize=True)
@@ -29,8 +27,6 @@ def visualize(gca_obj):
 def write_geojson(file_path, gca_obj):
     gca_as_json_str = geo_json.from_gca(gca_obj)
     fa.text_writer(file_path, gca_as_json_str)
-
-    return gca_as_json_str
 
 
 def read_csv(file_path):

@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="strix",
-    version="0.7.0",
+    version="0.7.1",
     author="HFM3",
     # author_email="author@example.com",
     description="A Python Package for field-based GIS work",

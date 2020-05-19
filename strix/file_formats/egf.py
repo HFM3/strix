@@ -24,12 +24,12 @@ def from_gca_point(gca_obj):
 
     egf_str += str(gca_obj.geometry_type)
     egf_str += "\n" * 4
-    egf_str += ', '.join(gca_obj.headers)
+    egf_str += ', '.join(str(i) for i in gca_obj.headers)
 
     for ft in features:
         lng, lat, elev = ft[1][:3]
         egf_str += "\n" * 4
-        egf_str += ', '.join(ft[0])
+        egf_str += ', '.join(str(i) for i in ft[0])
         egf_str += "\n"
         egf_str += ', '.join(str(coord) for coord in [lat, lng, elev])
     egf_str += "\n"
@@ -57,11 +57,11 @@ def from_gca_linestring(gca_obj):
 
     egf_str += str(gca_obj.geometry_type)
     egf_str += "\n" * 4
-    egf_str += ', '.join(gca_obj.headers)
+    egf_str += ', '.join(str(i) for i in gca_obj.headers)
 
     for ft in features:
         egf_str += "\n" * 4
-        egf_str += ', '.join(ft[0])
+        egf_str += ', '.join(str(i) for i in ft[0])
 
         for coord_set in ft[1]:
             lng, lat, elev = coord_set[:3]
@@ -91,11 +91,11 @@ def from_gca_polygon(gca_obj):
 
     egf_str += str(gca_obj.geometry_type)
     egf_str += "\n" * 4
-    egf_str += ', '.join(gca_obj.headers)
+    egf_str += ', '.join(str(i) for i in gca_obj.headers)
 
     for ft in gca_obj.features:
         egf_str += "\n" * 4
-        egf_str += ', '.join(ft[0])
+        egf_str += ', '.join(str(i) for i in ft[0])
 
         for rg_num, ring in enumerate(ft[1]):
             if rg_num > 0:

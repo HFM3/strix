@@ -178,6 +178,9 @@ def from_geo_json_validate(json_str):
 
     types = list()
     for ft in json_dict['features']:
+        if ft['geometry'] is None:
+            raise ValueError("Null geometry detected in GeoJSON file. Fix or remove Null geometries to continue.")
+
         types.append(ft['geometry']['type'])
 
     types = set(types)
